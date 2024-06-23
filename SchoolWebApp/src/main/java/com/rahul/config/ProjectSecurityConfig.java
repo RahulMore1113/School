@@ -43,7 +43,7 @@ public class ProjectSecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    InMemoryUserDetailsManager userDetailsService() {
 
         UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("admin")

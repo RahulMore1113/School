@@ -15,7 +15,9 @@ public class DashboardController {
                 .addAttribute("username", authentication.getName())
                 .addAttribute("roles", authentication.getAuthorities().toString());
 
-        return "dashboard.html";
+        throw new RuntimeException("It's been a bad day!!");
+
+//        return "dashboard.html";
 
     }
 
