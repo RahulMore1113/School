@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -16,7 +15,8 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
+    	http.csrf(csrf -> csrf
+    					.ignoringRequestMatchers("/saveMsg"))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/", "/home").permitAll()
@@ -26,6 +26,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/logout").permitAll()
                         .requestMatchers("/assets/**").permitAll())
                 .formLogin(login -> login
                         .loginPage("/login")
