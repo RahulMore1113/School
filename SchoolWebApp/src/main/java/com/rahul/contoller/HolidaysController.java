@@ -2,13 +2,17 @@ package com.rahul.contoller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.StreamSupport;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.rahul.model.Holiday;
+import com.rahul.repo.HolidaysRepo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,39 +20,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HolidaysController {
 
-	@GetMapping("/holidays/{display}")
-	public String displayHolidays(@PathVariable String display, Model model) {
+    @Autowired
+    private HolidaysRepo repo;
 
-		if (display != null && display.equals("all")) {
-			model.addAttribute("festival", true);
-			model.addAttribute("federal", true);
-		} else if (display != null && display.equals("federal"))
-			model.addAttribute("federal", true);
-		else if (display != null && display.equals("festival"))
-			model.addAttribute("festival", true);
+    @GetMapping("/holidays/{display}")
+    public String displayHolidays(@PathVariable String display, Model model) {
 
-		List<Holiday> holidays = Arrays.asList(
-				new Holiday(" Jan 1 ", "New Year's Day", Holiday.Type.FESTIVAL),
-				new Holiday(" Oct 31 ", "Halloween", Holiday.Type.FESTIVAL),
-				new Holiday(" Nov 24 ", "Thanksgiving Day", Holiday.Type.FESTIVAL),
-				new Holiday(" Dec 25 ", "Christmas", Holiday.Type.FESTIVAL),
-				new Holiday(" Jan 17 ", "Martin Luther King Jr. Day", Holiday.Type.FEDERAL),
-				new Holiday(" July 4 ", "Independence Day", Holiday.Type.FEDERAL),
-				new Holiday(" Sep 5 ", "Labor Day", Holiday.Type.FEDERAL),
-				new Holiday(" Nov 11 ", "Veterans Day", Holiday.Type.FEDERAL));
+        boolean isAll = display.equals("all");
 
-//        Holiday.Type[] types = Holiday.Type.values();
-//
-//        for (Holiday.Type type : types)
-//            model.addAttribute(type.toString(),
-//                    (holidays.stream().filter(holiday -> holiday.getType().equals(type))
-//                            .collect(Collectors.toList())));
+        Map<String, Boolean> displayMap = Map.of(
+                "all", isAll,
+                "federal", display.equals("federal") || isAll,
+                "festival", display.equals("festival") || isAll
+        );
 
-		Arrays.stream(Holiday.Type.values()).forEach(type -> model.addAttribute(type.toString(),
-				holidays.stream().filter(holiday -> holiday.getType().equals(type)).toList()));
+        displayMap.forEach(model::addAttribute);
 
-		return "holidays.html";
+        List<Holiday> holidayList = StreamSupport
+                .stream(repo.findAll().spliterator(), false)
+                .toList();
 
-	}
+        Arrays.stream(Holiday.Type.values()).forEach(type ->
+                model.addAttribute(type.toString(),
+                        holidayList.stream()
+                                .filter(holiday -> holiday.getType().equals(type))
+                                .toList())
+        );
+
+        return "holidays.html";
+
+    }
 
 }
