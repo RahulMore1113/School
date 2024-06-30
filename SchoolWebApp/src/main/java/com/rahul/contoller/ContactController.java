@@ -1,7 +1,6 @@
 package com.rahul.contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -52,9 +51,9 @@ public class ContactController {
 	}
 
 	@GetMapping("/closeMsg")
-	public String closeMsg(@RequestParam int id, Authentication authentication) {
+	public String closeMsg(@RequestParam int id) {
 
-		service.updateMsgStatus(id, authentication.getName());
+		service.updateMsgStatus(id);
 
 		return "redirect:/displayMessages";
 

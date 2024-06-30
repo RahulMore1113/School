@@ -10,6 +10,6 @@ public interface IContactService {
 
 	List<Contact> findMsgsWithOpenStatus();
 
-	boolean updateMsgStatus(int id, String updatedBy);
+	boolean updateMsgStatus(int id);
 
 }
