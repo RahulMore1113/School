@@ -15,25 +15,28 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-	@GetMapping("/login")
+    @GetMapping("/login")
     @PostMapping("/login")
     public String displayLoginPage(@RequestParam(required = false) String error,
-                                   @RequestParam(required = false) String logout, Model model) {
+                                   @RequestParam(required = false) String logout,
+                                   @RequestParam(required = false) String register,
+                                   Model model) {
 
-        String errorMsg = null;
+		String errorMsg = null;
 
-        if (error != null)
-            errorMsg = "Username or Password is incorrect !!";
+		if (error != null)
+			errorMsg = "Username or Password is incorrect !!";
+		else if (logout != null)
+			errorMsg = "You have been successfully logged out !!";
+		else if (register != null)
+			errorMsg = "Your registration successful. Login with registered credentials !!";
 
-        if (logout != null)
-            errorMsg = "You have been successfully logged out !!";
+		model.addAttribute("errorMessage", errorMsg);
 
-        model.addAttribute("errorMessge", errorMsg);
+		return "login.html";
 
-        return "login.html";
+	}
 
-    }
-	
 	@GetMapping("/logout")
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 
