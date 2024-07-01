@@ -7,4 +7,7 @@ import com.rahul.model.Person;
 
 @Repository
 public interface PersonRepo extends JpaRepository<Person, Integer> {
+
+	Person readByEmail(String email);
+
 }
