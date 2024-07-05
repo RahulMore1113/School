@@ -1,4 +1,4 @@
-package com.rahul.contoller;
+package com.rahul.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,13 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HolidaysController {
 
-    @Autowired
-    private HolidaysRepo repo;
+	@Autowired
+	private HolidaysRepo repo;
 
-    @GetMapping("/holidays/{display}")
-    public String displayHolidays(@PathVariable String display, Model model) {
+	@GetMapping("/holidays/{display}")
+	public String displayHolidays(@PathVariable String display, Model model) {
 
-        boolean isAll = display.equals("all");
+		boolean isAll = display.equals("all");
 
         Map<String, Boolean> displayMap = Map.of(
                 "all", isAll,
@@ -47,8 +47,8 @@ public class HolidaysController {
                                 .toList())
         );
 
-        return "holidays.html";
+		return "holidays.html";
 
-    }
+	}
 
 }

@@ -32,6 +32,8 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/displayProfile").authenticated()
+                        .requestMatchers("/updateProfile").authenticated()
                         .requestMatchers(PathRequest.toH2Console()).permitAll())
                 .formLogin(login -> login
                         .loginPage("/login")
@@ -47,10 +49,10 @@ public class ProjectSecurityConfig {
 		return http.build();
 
 	}
-	
+
 	@Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }

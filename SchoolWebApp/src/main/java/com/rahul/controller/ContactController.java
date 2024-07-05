@@ -1,4 +1,4 @@
-package com.rahul.contoller;
+package com.rahul.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

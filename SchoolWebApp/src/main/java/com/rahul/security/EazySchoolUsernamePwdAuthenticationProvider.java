@@ -45,7 +45,7 @@ public class EazySchoolUsernamePwdAuthenticationProvider implements Authenticati
 		Person person = repo.readByEmail(email);
 
 		if (person != null && person.getPersonId() > 0 && encoder.matches(pwd, person.getPwd()))
-			return new UsernamePasswordAuthenticationToken(person.getName(), null, getGrantedAuthorities(person.getRole()));
+			return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(person.getRole()));
 		else
 			throw new BadCredentialsException("Invalid Credentials!");
 
