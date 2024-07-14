@@ -12,15 +12,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ProjectSecurityConfig {
 
-	@Bean
+    @Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf
+	      http.csrf(csrf -> csrf
                         .ignoringRequestMatchers("/saveMsg")
                         .ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/displayMessages").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                         .requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/holidays/**").permitAll()
@@ -46,7 +47,7 @@ public class ProjectSecurityConfig {
                         .permitAll())
                 .httpBasic(Customizer.withDefaults());
 
-		return http.build();
+        return http.build();
 
 	}
 

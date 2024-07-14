@@ -10,15 +10,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @FieldsValueMatch.List({
         @FieldsValueMatch(
@@ -72,5 +75,9 @@ public class Person extends BaseEntity {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
 	private Roles role;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "class_id", referencedColumnName = "classId")
+	private EazyClass eazyClass;
 
 }
