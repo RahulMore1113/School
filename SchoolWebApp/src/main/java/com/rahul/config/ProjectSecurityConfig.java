@@ -13,9 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
 
     @Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-	      http.csrf(csrf -> csrf
+        http.csrf(csrf -> csrf
                         .ignoringRequestMatchers("/saveMsg")
                         .ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests(requests -> requests
@@ -35,6 +35,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/assets/**").permitAll()
                         .requestMatchers("/displayProfile").authenticated()
                         .requestMatchers("/updateProfile").authenticated()
+                        .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers(PathRequest.toH2Console()).permitAll())
                 .formLogin(login -> login
                         .loginPage("/login")
