@@ -37,8 +37,8 @@ public class ContactServiceImpl implements IContactService {
 		Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
 				sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
 
-//        return repo.findByStatus(EazySchoolConstants.OPEN, pageable);
-		return repo.findOpenMsgs(EazySchoolConstants.OPEN, pageable);
+		return repo.findByStatus(EazySchoolConstants.OPEN, pageable);
+//        return repo.findOpenMsgs(EazySchoolConstants.OPEN, pageable);
 //        return repo.findOpenMsgsNative(EazySchoolConstants.OPEN, pageable);           //Dynamic Sorting will not work for @NamedNativeQuery parameter
 
 	}
