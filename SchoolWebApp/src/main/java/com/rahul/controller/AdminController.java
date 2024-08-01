@@ -131,6 +131,9 @@ public class AdminController {
     public ModelAndView displayCourses() {
 
         return new ModelAndView("courses_secure.html")
+//                .addObject("courses", coursesRepo.findByOrderByNameDesc())                                                        //Static Sorting
+//                .addObject("courses", coursesRepo.findAll(Sort.by("name").descending()))                                          //Dynamic Sorting
+//                .addObject("courses", coursesRepo.findAll(Sort.by("name").descending().and(Sort.by("fees").descending())))        //Dynamic Sorting
                 .addObject("courses", coursesRepo.findAll())
                 .addObject("course", new Courses());
 

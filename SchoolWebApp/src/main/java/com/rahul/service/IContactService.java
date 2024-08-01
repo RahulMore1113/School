@@ -1,15 +1,15 @@
 package com.rahul.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.rahul.model.Contact;
 
 public interface IContactService {
 
-	boolean saveMessageDetails(Contact contact);
+    boolean saveMessageDetails(Contact contact);
 
-	List<Contact> findMsgsWithOpenStatus();
+    Page<Contact> findMsgsWithOpenStatus(int pageNum, String sortField, String sortDir);
 
-	boolean updateMsgStatus(int id);
+    boolean updateMsgStatus(int id);
 
 }

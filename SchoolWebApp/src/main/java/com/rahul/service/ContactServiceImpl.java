@@ -1,8 +1,10 @@
 package com.rahul.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rahul.constants.EazySchoolConstants;
@@ -15,36 +17,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ContactServiceImpl implements IContactService {
 
-	@Autowired
-	private ContactRepo repo;
+    @Autowired
+    private ContactRepo repo;
 
-	@Override
-	public boolean saveMessageDetails(Contact contact) {
+    @Override
+    public boolean saveMessageDetails(Contact contact) {
 
-		contact.setStatus(EazySchoolConstants.OPEN);
+        contact.setStatus(EazySchoolConstants.OPEN);
 
-		return repo.save(contact).getContactId() > 0;
+        return repo.save(contact).getContactId() > 0;
 
-	}
+    }
 
-	@Override
-	public List<Contact> findMsgsWithOpenStatus() {
+    @Override
+    public Page<Contact> findMsgsWithOpenStatus(int pageNum, String sortField, String sortDir) {
 
-		return repo.findByStatus(EazySchoolConstants.OPEN);
+        int pageSize = 5;
+        
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
 
-	}
+        return repo.findByStatus(EazySchoolConstants.OPEN, pageable);
 
-	@Override
-	public boolean updateMsgStatus(int id) {
+    }
 
-		return repo.findById(id).map(contact -> {
+    @Override
+    public boolean updateMsgStatus(int id) {
 
-			contact.setStatus(EazySchoolConstants.CLOSE);
+        return repo.findById(id).map(contact -> {
 
-			return repo.save(contact).getUpdatedBy() != null;
+            contact.setStatus(EazySchoolConstants.CLOSE);
 
-		}).orElse(false);
+            return repo.save(contact).getUpdatedBy() != null;
 
-	}
+        }).orElse(false);
+
+    }
 
 }
