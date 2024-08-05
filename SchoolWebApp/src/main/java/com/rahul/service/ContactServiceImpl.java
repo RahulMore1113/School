@@ -1,5 +1,7 @@
 package com.rahul.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.rahul.config.EazySchoolProps;
 import com.rahul.constants.EazySchoolConstants;
 import com.rahul.model.Contact;
 import com.rahul.repo.ContactRepo;
@@ -20,6 +23,9 @@ public class ContactServiceImpl implements IContactService {
 	@Autowired
 	private ContactRepo repo;
 
+	@Autowired
+	private EazySchoolProps props;
+
 	@Override
 	public boolean saveMessageDetails(Contact contact) {
 
@@ -32,7 +38,11 @@ public class ContactServiceImpl implements IContactService {
 	@Override
 	public Page<Contact> findMsgsWithOpenStatus(int pageNum, String sortField, String sortDir) {
 
-		int pageSize = 5;
+        int pageSize = Optional.ofNullable(props.getContact())
+                .map(contact -> contact.get("pageSize"))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .orElse(props.getPageSize());
 
 		Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
 				sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());

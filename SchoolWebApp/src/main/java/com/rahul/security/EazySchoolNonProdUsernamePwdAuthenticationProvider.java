@@ -20,8 +20,8 @@ import com.rahul.model.Roles;
 import com.rahul.repo.PersonRepo;
 
 @Component
-@Profile("prod")
-public class EazySchoolUsernamePwdAuthenticationProvider implements AuthenticationProvider {
+@Profile("!prod")
+public class EazySchoolNonProdUsernamePwdAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
 	private PersonRepo repo;

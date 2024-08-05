@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rahul.model.Profile;
-import com.rahul.service.ProfileServiceImpl;
+import com.rahul.service.IProfileService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -21,26 +21,26 @@ import lombok.extern.slf4j.Slf4j;
 public class ProfileController {
 
 	@Autowired
-	private ProfileServiceImpl service;
+	private IProfileService service;
 
 	@GetMapping("/displayProfile")
 	public ModelAndView displayProfile(HttpSession session) {
-		
+
 		Profile profile = service.getProfile(session);
-		
+
 		if (profile == null)
 			return new ModelAndView("error.html").addObject("message", "User not logged in");
-		
+
 		return new ModelAndView("profile.html").addObject("profile", profile);
-		
+
 	}
 
 	@PostMapping("/updateProfile")
-	public String updateProfile(@Valid @ModelAttribute Profile profile, Errors errors, HttpSession session, RedirectAttributes redirectAttributes) {
-		
-		if (errors.hasErrors()) 
+	public String updateProfile(@Valid @ModelAttribute Profile profile, Errors errors, HttpSession session,
+			RedirectAttributes redirectAttributes) {
+
+		if (errors.hasErrors())
 			return "profile.html";
-		
 
 		try {
 			service.updateProfile(profile, session);
@@ -51,7 +51,7 @@ public class ProfileController {
 		}
 
 		return "redirect:/displayProfile";
-		
+
 	}
-	
+
 }
